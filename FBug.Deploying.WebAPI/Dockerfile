@@ -6,13 +6,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 WORKDIR /src
 COPY ["FBug.Deploying.WebAPI/FBug.Deploying.WebAPI.csproj", "FBug.Deploying.WebAPI/"]
-RUN dotnet restore "FBug.Deploying.WebAPI/FBug.Deploying.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/FBug.Deploying.WebAPI"
 RUN dotnet build "FBug.Deploying.WebAPI.csproj" -c Release -o /app
-
-FROM build AS publish
-RUN dotnet publish "FBug.Deploying.WebAPI.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
