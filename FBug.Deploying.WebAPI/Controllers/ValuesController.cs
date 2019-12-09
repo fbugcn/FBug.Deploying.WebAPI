@@ -14,8 +14,7 @@ namespace FBug.Deploying.WebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            List<string> ss = new List<string>() { "hehe" };
-            return new string[] { "value1", ss.Count > 0 ? ss[0] : "value2" };
+            return new string[] { "value1", "value2, hehe." };
         }
 
         // GET api/values/5
@@ -24,5 +23,6 @@ namespace FBug.Deploying.WebAPI.Controllers
         {
             return string.Concat("value", id);
         }
+
     }
 }
