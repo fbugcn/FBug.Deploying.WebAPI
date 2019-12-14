@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Mvc;
@@ -67,5 +68,22 @@ namespace FBug.Deploying.WebAPI.Controllers
             }
 
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Test/GetString")]
+        public ActionResult<string> GetString(string c)
+        {
+            Regex rexp = new Regex(@"\\u[\da-f]{4}");
+            return rexp.Replace(c, (match => {
+                return ((char)Convert.ToUInt16(match.Value.Substring(2), 0x10)).ToString();
+            }));
+        }
+
     }
 }
