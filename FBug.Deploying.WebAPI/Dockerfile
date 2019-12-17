@@ -10,6 +10,9 @@ COPY . .
 WORKDIR "/src/FBug.Deploying.WebAPI"
 RUN dotnet build "FBug.Deploying.WebAPI.csproj" -c Release -o /app
 
+FROM build AS publish
+RUN dotnet publish "FBug.Deploying.WebAPI.csproj" -c Release -o /app
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
