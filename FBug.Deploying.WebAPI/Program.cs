@@ -19,6 +19,21 @@ namespace FBug.Deploying.WebAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                // .UseUrls("")
+                .ConfigureAppConfiguration((hostContext, configBuilder) =>
+                {
+                    configBuilder.AddJsonFile("appsettings.json", true, true);
+                })
+                .ConfigureLogging((hostContext, logBuilder) =>
+                {
+                    logBuilder
+                        .AddDebug()
+                        .AddConsole();
+                })
+                .UseKestrel(serverOptions =>
+                {
+                    // Set properties and call methods on serverOptions
+                })
                 .UseStartup<Startup>();
     }
 }
