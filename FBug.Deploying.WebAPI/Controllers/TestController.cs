@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
@@ -17,6 +18,7 @@ namespace FBug.Deploying.WebAPI.Controllers
         // GET: /<controller>/
         [HttpGet]
         [Route("api/Test/ParseXml")]
+        [Consumes(MediaTypeNames.Application.Xml)]
         public ActionResult<string> ParseXml(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
@@ -77,6 +79,7 @@ namespace FBug.Deploying.WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/Test/GetString")]
+        [Consumes(MediaTypeNames.Application.Json)]
         public ActionResult<string> GetString(string c)
         {
             Regex rexp = new Regex(@"\\u[\da-f]{4}");
