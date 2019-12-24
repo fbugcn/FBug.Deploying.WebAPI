@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Configuration;
 
 namespace FBug.Plugin.FildderExtensions.UI
 {
@@ -16,6 +17,7 @@ namespace FBug.Plugin.FildderExtensions.UI
     {
         private Dictionary<int, string> m_DictContents;
         private int m_Index;
+        private string m_ServiceUrl;
 
         /// <summary>
         /// 是否在运行中
@@ -58,10 +60,11 @@ namespace FBug.Plugin.FildderExtensions.UI
 
         private void HttpRecordingControl_Load(object sender, EventArgs e)
         {
-            this.LayoutControls();
-
             m_Index = 0;
             m_DictContents = new Dictionary<int, string>();
+
+            this.LoadConfig();
+            this.LayoutControls();
         }
 
         private void HttpRecordingControl_Resize(object sender, EventArgs e)
@@ -92,6 +95,11 @@ namespace FBug.Plugin.FildderExtensions.UI
 
         private void LbRequested_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (this.lbRequested.SelectedIndex < 0)
+            {
+                return;
+            }
+
             TextValueModel item = lbRequested.Items[this.lbRequested.SelectedIndex] as TextValueModel;
             if (item != null
                 && m_DictContents.TryGetValue(item.Value, out string content))
@@ -106,7 +114,7 @@ namespace FBug.Plugin.FildderExtensions.UI
 
             try
             {
-                Thread.Sleep(1000);
+
 
                 this.IsRunning = true;
                 btnStop.Enabled = true;
@@ -124,13 +132,25 @@ namespace FBug.Plugin.FildderExtensions.UI
             try
             {
                 this.IsRunning = false;
-                Thread.Sleep(1000);
+
 
                 btnStart.Enabled = true;
             }
             catch
             {
                 btnStop.Enabled = true;
+            }
+        }
+
+        private void CsmiCopy_Click(object sender, EventArgs e)
+        {
+            if (lbRequested.SelectedIndex >= 0)
+            {
+                TextValueModel item = lbRequested.Items[this.lbRequested.SelectedIndex] as TextValueModel;
+                if (item != null)
+                {
+                    Clipboard.SetText(item.Text);
+                }
             }
         }
 
@@ -149,6 +169,17 @@ namespace FBug.Plugin.FildderExtensions.UI
             cbIgnoreCase.Left = this.Width - lbRequested.Width - splited - cbIgnoreCase.Width;
             txtContent.Width = this.Width - lbRequested.Width - splited - txtContent.Left;
             txtContent.Height = this.Height - txtContent.Top - 25;
+        }
+
+        private void LoadConfig()
+        {
+            txtReguraText.Text = ConfigurationManager.AppSettings["ReguraText"];
+            m_ServiceUrl = ConfigurationManager.AppSettings["ServiceUrl"];
+            if (bool.TryParse(ConfigurationManager.AppSettings["AutoStart"], out bool autoStart)
+                && autoStart)
+            {
+                btnStart.PerformClick();
+            }
         }
     }
 }

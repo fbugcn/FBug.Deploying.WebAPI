@@ -38,6 +38,7 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.cbIgnoreCase = new System.Windows.Forms.CheckBox();
             this.txtContent = new System.Windows.Forms.TextBox();
+            this.csmiCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsListItem.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -85,15 +86,16 @@
             // cmsListItem
             // 
             this.cmsListItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.csmiCopy,
             this.csmiClearAll});
             this.cmsListItem.Name = "cmsListItem";
-            this.cmsListItem.Size = new System.Drawing.Size(117, 26);
+            this.cmsListItem.Size = new System.Drawing.Size(181, 70);
             // 
             // csmiClearAll
             // 
             this.csmiClearAll.Name = "csmiClearAll";
-            this.csmiClearAll.Size = new System.Drawing.Size(116, 22);
-            this.csmiClearAll.Text = "清理(&C)";
+            this.csmiClearAll.Size = new System.Drawing.Size(180, 22);
+            this.csmiClearAll.Text = "清理(&D)";
             this.csmiClearAll.Click += new System.EventHandler(this.CsmiClearAll_Click);
             // 
             // btnStop
@@ -129,6 +131,13 @@
             this.txtContent.Size = new System.Drawing.Size(354, 389);
             this.txtContent.TabIndex = 5;
             // 
+            // csmiCopy
+            // 
+            this.csmiCopy.Name = "csmiCopy";
+            this.csmiCopy.Size = new System.Drawing.Size(180, 22);
+            this.csmiCopy.Text = "复制(&C)";
+            this.csmiCopy.Click += new System.EventHandler(this.CsmiCopy_Click);
+            // 
             // HttpRecordingControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -161,5 +170,6 @@
         private System.Windows.Forms.TextBox txtContent;
         private System.Windows.Forms.ContextMenuStrip cmsListItem;
         private System.Windows.Forms.ToolStripMenuItem csmiClearAll;
+        private System.Windows.Forms.ToolStripMenuItem csmiCopy;
     }
 }

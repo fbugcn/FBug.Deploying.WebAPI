@@ -35,6 +35,7 @@
       <HintPath>..\..\..\Program Files\Fiddler\Fiddler.exe</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -57,7 +58,9 @@
     </Compile>
     <Compile Include="UI\TextValueModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\HttpRecordingControl.resx">
       <DependentUpon>HttpRecordingControl.cs</DependentUpon>
