@@ -34,11 +34,12 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.lbRequested = new System.Windows.Forms.ListBox();
             this.cmsListItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.csmiCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.csmiClearAll = new System.Windows.Forms.ToolStripMenuItem();
             this.btnStop = new System.Windows.Forms.Button();
             this.cbIgnoreCase = new System.Windows.Forms.CheckBox();
             this.txtContent = new System.Windows.Forms.TextBox();
-            this.csmiCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnClearAll = new System.Windows.Forms.Button();
             this.cmsListItem.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,12 +90,19 @@
             this.csmiCopy,
             this.csmiClearAll});
             this.cmsListItem.Name = "cmsListItem";
-            this.cmsListItem.Size = new System.Drawing.Size(181, 70);
+            this.cmsListItem.Size = new System.Drawing.Size(118, 48);
+            // 
+            // csmiCopy
+            // 
+            this.csmiCopy.Name = "csmiCopy";
+            this.csmiCopy.Size = new System.Drawing.Size(117, 22);
+            this.csmiCopy.Text = "复制(&C)";
+            this.csmiCopy.Click += new System.EventHandler(this.CsmiCopy_Click);
             // 
             // csmiClearAll
             // 
             this.csmiClearAll.Name = "csmiClearAll";
-            this.csmiClearAll.Size = new System.Drawing.Size(180, 22);
+            this.csmiClearAll.Size = new System.Drawing.Size(117, 22);
             this.csmiClearAll.Text = "清理(&D)";
             this.csmiClearAll.Click += new System.EventHandler(this.CsmiClearAll_Click);
             // 
@@ -131,17 +139,21 @@
             this.txtContent.Size = new System.Drawing.Size(354, 389);
             this.txtContent.TabIndex = 5;
             // 
-            // csmiCopy
+            // btnClearAll
             // 
-            this.csmiCopy.Name = "csmiCopy";
-            this.csmiCopy.Size = new System.Drawing.Size(180, 22);
-            this.csmiCopy.Text = "复制(&C)";
-            this.csmiCopy.Click += new System.EventHandler(this.CsmiCopy_Click);
+            this.btnClearAll.Location = new System.Drawing.Point(188, 40);
+            this.btnClearAll.Name = "btnClearAll";
+            this.btnClearAll.Size = new System.Drawing.Size(59, 23);
+            this.btnClearAll.TabIndex = 6;
+            this.btnClearAll.Text = "清理";
+            this.btnClearAll.UseVisualStyleBackColor = true;
+            this.btnClearAll.Click += new System.EventHandler(this.BtnClearAll_Click);
             // 
             // HttpRecordingControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnClearAll);
             this.Controls.Add(this.txtContent);
             this.Controls.Add(this.cbIgnoreCase);
             this.Controls.Add(this.lbRequested);
@@ -171,5 +183,6 @@
         private System.Windows.Forms.ContextMenuStrip cmsListItem;
         private System.Windows.Forms.ToolStripMenuItem csmiClearAll;
         private System.Windows.Forms.ToolStripMenuItem csmiCopy;
+        private System.Windows.Forms.Button btnClearAll;
     }
 }
