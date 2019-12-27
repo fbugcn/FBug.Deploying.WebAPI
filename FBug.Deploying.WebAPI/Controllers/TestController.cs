@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -88,5 +89,20 @@ namespace FBug.Deploying.WebAPI.Controllers
             }));
         }
 
+
+        [HttpGet]
+        [Route("api/Test/GetDefaultValue")]
+        public ActionResult<string> GetDefaultValue()
+        {
+            string json = "{\"webapi\":\"D4917D03-6630-4FA4-978A-5415FAE29B69\"}";
+            JObject jo = (JObject)JsonConvert.DeserializeObject(json);
+            if (jo.HasValues)
+            {
+                JProperty jp = (JProperty)jo.First;
+                return string.Concat(jp.Name, ":", jo[jp.Name]);
+            }
+
+            return "hehe";
+        }
     }
 }

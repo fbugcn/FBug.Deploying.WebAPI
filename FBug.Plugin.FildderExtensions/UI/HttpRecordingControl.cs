@@ -10,10 +10,9 @@ namespace FBug.Plugin.FildderExtensions.UI
 {
     public partial class HttpRecordingControl : UserControl
     {
-        private HttpClient m_HttpClient;
+        private DataPostHelper m_Poster;
         private Dictionary<int, string> m_DictContents;
         private int m_Index;
-        private IList<string> m_ServiceUrls;
 
         /// <summary>
         /// 是否在运行中
@@ -46,42 +45,20 @@ namespace FBug.Plugin.FildderExtensions.UI
         {
             if (!this.IsRunning) return;
 
-            bool hasOk = false;
-            bool hasEr = false;
-            if (m_ServiceUrls.Count > 0)
-            {
-                StringContent stringContent = new StringContent(content, Encoding.UTF8, "application/json");
-                foreach (string forwardUrl in m_ServiceUrls)
-                {
-                    var result = m_HttpClient.PostAsync(forwardUrl, stringContent).GetAwaiter().GetResult();
-                    if ( result.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        hasOk = true;
-                    }
-                    else
-                    {
-                        hasEr = true;
-                    }
-
-                    // if (result.StatusCode == System.Net.HttpStatusCode.OK)
-                    // {
-                    //     result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    // }
-                }
-            }
-
             string prefix = string.Empty;
-            if (hasOk && !hasEr)
+            switch (m_Poster.Post(content))
             {
-                prefix = "[OK]";
-            }
-            else if (hasEr && !hasOk)
-            {
-                prefix = "[ER]";
-            }
-            else if (hasOk && hasEr)
-            {
-                prefix = "[OE]";
+                case PostResult.Ok:
+                    prefix = "[OK]";
+                    break;
+                case PostResult.Error:
+                    prefix = "[ER]";
+                    break;
+                case PostResult.Partial:
+                    prefix = "[OE]";
+                    break;
+                default:
+                    break;
             }
 
             int index = m_Index++;
@@ -95,11 +72,8 @@ namespace FBug.Plugin.FildderExtensions.UI
         private void HttpRecordingControl_Load(object sender, EventArgs e)
         {
             m_Index = 0;
-            m_HttpClient = new HttpClient();
+            m_Poster = new DataPostHelper();
             m_DictContents = new Dictionary<int, string>();
-
-            m_HttpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
-            m_HttpClient.Timeout = TimeSpan.FromSeconds(15);
 
             this.LoadConfig();
             this.LayoutControls();
@@ -188,8 +162,7 @@ namespace FBug.Plugin.FildderExtensions.UI
 
         private void HttpRecordingControl_Disposed(object sender, EventArgs e)
         {
-            m_HttpClient.Dispose();
-            m_HttpClient = null;
+            m_Poster.Dispose();
         }
 
         private void CsmiCopy_Click(object sender, EventArgs e)
@@ -224,29 +197,11 @@ namespace FBug.Plugin.FildderExtensions.UI
         private void LoadConfig()
         {
             txtReguraText.Text = ConfigurationManager.AppSettings["ReguraText"];
-            m_ServiceUrls = this.ParseStringList(ConfigurationManager.AppSettings["ServiceUrl"]);
             if (bool.TryParse(ConfigurationManager.AppSettings["AutoStart"], out bool autoStart)
                 && autoStart)
             {
                 btnStart.PerformClick();
             }
         }
-
-        private IList<string> ParseStringList(string content)
-        {
-            content = content.Trim();
-            if (!string.IsNullOrWhiteSpace(content))
-            {
-                if (content[0] == '[' && content[content.Length - 1] == ']')
-                {
-                    return content.Substring(1, content.Length - 2).Split('|', ',');
-                }
-
-                return new List<string>() { content };
-            }
-
-            return new List<string>();
-        }
-
     }
 }
