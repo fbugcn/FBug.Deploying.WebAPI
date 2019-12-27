@@ -36,20 +36,27 @@ namespace FBug.Plugin.FildderExtensions
                 StringContent stringContent = new StringContent(content, Encoding.UTF8, "application/json");
                 foreach (string forwardUrl in m_ServiceUrls)
                 {
-                    var result = m_HttpClient.PostAsync(forwardUrl, stringContent).GetAwaiter().GetResult();
-                    if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                    try
                     {
-                        hasOk = true;
+                        var result = m_HttpClient.PostAsync(forwardUrl, stringContent).GetAwaiter().GetResult();
+                        if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            hasOk = true;
+                        }
+                        else
+                        {
+                            hasEr = true;
+                        }
+
+                        // if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                        // {
+                        //     result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        // }
                     }
-                    else
+                    catch
                     {
                         hasEr = true;
                     }
-
-                    // if (result.StatusCode == System.Net.HttpStatusCode.OK)
-                    // {
-                    //     result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    // }
                 }
             }
 
