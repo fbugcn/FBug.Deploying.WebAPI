@@ -10,7 +10,7 @@ using FBug.Plugin.FildderExtensions.UI;
 namespace FBug.Plugin.FildderExtensions
 {
     /// <summary>
-    /// 
+    /// HttpRequest 篡改器, 记录符合规则的请求和返回结果。
     /// </summary>
     public class HttpRecordingAutoTamper : IAutoTamper
     {
