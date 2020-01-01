@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mime;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
@@ -94,12 +96,21 @@ namespace FBug.Deploying.WebAPI.Controllers
         [Route("api/Test/GetDefaultValue")]
         public ActionResult<string> GetDefaultValue()
         {
+            string content = " mtopjsonp6({\"api\":\"mtop.alimama.union.xt.en.api.entry\",\"v\":\"2.0\"})";
             string json = "{\"webapi\":\"D4917D03-6630-4FA4-978A-5415FAE29B69\"}";
             JObject jo = (JObject)JsonConvert.DeserializeObject(json);
             if (jo.HasValues)
             {
                 JProperty jp = (JProperty)jo.First;
-                return string.Concat(jp.Name, ":", jo[jp.Name]);
+
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+                    client.DefaultRequestHeaders.Add(jp.Name, Convert.ToString(jo[jp.Name]));
+                    var result = client.PostAsync("https://h5.taohuikeji.net/api/ShopNew/ReceiveContent", stringContent)
+                        .GetAwaiter().GetResult();
+                    return result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                }
             }
 
             return "hehe";
