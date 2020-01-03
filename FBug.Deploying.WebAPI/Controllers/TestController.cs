@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using FBug.Deploying.WebAPI.Demo;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -74,6 +75,19 @@ namespace FBug.Deploying.WebAPI.Controllers
 
         }
 
+        [HttpGet]
+        [Route("api/Test/Call")]
+        [Consumes(MediaTypeNames.Application.Xml)]
+        public ActionResult<string> Call()
+        {
+            var toWrap = new MessageImplementation();
+            IMessage decorator = MessageDecoratorProxy.CreateProxy<IMessage>();
+            ((MessageDecoratorProxy)decorator).Wrapped = toWrap;
+            ((MessageDecoratorProxy)decorator).Start = (tm, a) => Console.WriteLine($"{tm.Name}({string.Join(',', a)})方法开始调用");
+            ((MessageDecoratorProxy)decorator).End = (tm, a, r) => Console.WriteLine($"{tm.Name}({string.Join(',', a)})方法结束调用，返回结果{r}");
+            decorator.Echo("Echo");
+            return decorator.Method("Method");
+        }
 
         /// <summary>
         /// 
