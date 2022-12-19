@@ -110,7 +110,7 @@ namespace FBug.Deploying.WebAPI.Controllers
         [Route("api/Test/GetDefaultValue")]
         public ActionResult<string> GetDefaultValue()
         {
-            string content = " mtopjsonp6({\"api\":\"mtop.alimama.union.xt.en.api.entry\",\"v\":\"2.0\"})";
+            string content = " mtopjsonp6({\"api\":\"remote.website.com\",\"v\":\"2.0\"})";
             string json = "{\"webapi\":\"D4917D03-6630-4FA4-978A-5415FAE29B69\"}";
             JObject jo = (JObject)JsonConvert.DeserializeObject(json);
             if (jo.HasValues)
@@ -121,7 +121,7 @@ namespace FBug.Deploying.WebAPI.Controllers
                 {
                     StringContent stringContent = new StringContent(content, Encoding.UTF8, "application/json");
                     client.DefaultRequestHeaders.Add(jp.Name, Convert.ToString(jo[jp.Name]));
-                    var result = client.PostAsync("https://h5.taohuikeji.net/api/ShopNew/ReceiveContent", stringContent)
+                    var result = client.PostAsync("https://my.website.com/api/ReceiveContent", stringContent)
                         .GetAwaiter().GetResult();
                     return result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 }
